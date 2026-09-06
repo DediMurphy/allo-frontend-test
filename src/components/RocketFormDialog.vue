@@ -32,6 +32,32 @@
             :rules="imageUrlRules"
             variant="outlined"
           />
+
+          <v-text-field
+            v-model="launchCost"
+            class="mb-2"
+            label="Cost per launch (USD)"
+            prefix="$"
+            :rules="launchCostRules"
+            type="number"
+            variant="outlined"
+          />
+
+          <v-text-field
+            v-model="countryCode"
+            class="mb-2"
+            hint="Three-letter code, e.g. USA"
+            label="Country"
+            :rules="countryCodeRules"
+            variant="outlined"
+          />
+
+          <v-text-field
+            v-model="maidenFlight"
+            label="First flight"
+            type="date"
+            variant="outlined"
+          />
         </v-form>
       </v-card-text>
 
@@ -61,6 +87,9 @@ const formRef = ref<InstanceType<typeof VForm> | null>(null);
 const name = ref("");
 const description = ref("");
 const imageUrl = ref("");
+const launchCost = ref('')
+const countryCode = ref('')
+const maidenFlight = ref('')
 
 const nameRules = [
   (value: string) => !!value?.trim() || "Name is required.",
@@ -79,12 +108,33 @@ const imageUrlRules = [
   },
 ];
 
-function reset(): void {
-  name.value = "";
-  description.value = "";
-  imageUrl.value = "";
-  formRef.value?.resetValidation();
-}
+  function reset (): void {
+    name.value = ''
+    description.value = ''
+    imageUrl.value = ''
+    launchCost.value = ''
+    countryCode.value = ''
+    maidenFlight.value = ''
+    formRef.value?.resetValidation()
+  }
+
+  const launchCostRules = [
+    (value: string) => {
+      if (!value?.trim()) {
+        return true
+      }
+      return Number(value) >= 0 || 'Cost cannot be negative.'
+    },
+  ]
+
+  const countryCodeRules = [
+    (value: string) => {
+      if (!value?.trim()) {
+        return true
+      }
+      return /^[A-Za-z]{3}$/.test(value.trim()) || 'Use a three-letter code, e.g. USA.'
+    },
+  ]
 
 async function submit(): Promise<void> {
   const result = await formRef.value?.validate();
@@ -92,11 +142,14 @@ async function submit(): Promise<void> {
     return;
   }
 
-  emit("created", {
-    name: name.value.trim(),
-    description: description.value.trim(),
-    imageUrl: imageUrl.value.trim() || null,
-  });
+    emit('created', {
+      name: name.value.trim(),
+      description: description.value.trim(),
+      imageUrl: imageUrl.value.trim() || null,
+      launchCost: launchCost.value.trim() || null,
+      countryCode: countryCode.value.trim().toUpperCase() || null,
+      maidenFlight: maidenFlight.value || null,
+    })
 
   isOpen.value = false;
 }

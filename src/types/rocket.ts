@@ -35,4 +35,4 @@ export interface Rocket {
     isCustom: boolean
 }
 
-export type NewRocketInput = Pick<Rocket, 'name' | 'description' | 'imageUrl'>
+export type NewRocketInput = Omit<Rocket, 'id' | 'isCustom'>

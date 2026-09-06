@@ -70,9 +70,9 @@ export const useRocketsStore = defineStore('rockets', () => {
             name: input.name,
             description: input.description,
             imageUrl: input.imageUrl,           
-            launchCost: null,
-            countryCode: null,
-            maidenFlight: null,
+            launchCost: input.launchCost,      
+            countryCode: input.countryCode,    
+            maidenFlight: input.maidenFlight,  
 
             isCustom: true,   
         }

@@ -1,68 +1,79 @@
-# SpaceX Rockets — Allo Frontend Test
+# Allo Bank Frontend Technical Assignment
 
-Two-screen rocket browser built on the Launch Library 2 API (v2.2.0).
+In this assignment, you’re assigned to create a website that displays rockets. This website only has two screens: rocket list screen and rocket detail screen. Here are the requirements:
 
-## Running locally
+### Functional Requirements
+- As a user, I want to see a list of rockets in the rocket list screen (Show each rocket image, rocket name, and rocket description)
+- As a user, I want to be able to filter the rockets in the rocket list screen
+- As a user, I want to be able to add the new rocket in the rocket list screen (the API is read-only, so the new rocket only needs to appear in the running app)
+- As a user, I want to be able to see the rocket detail by clicking a rocket in the rocket list screen (Show rocket image, rocket name, rocket description, cost per launch, country, first flight)
+- As a user, I want both screens to still display correctly when some rocket data is missing
 
-```bash
-npm install
-npm run dev      # http://localhost:3000
-```
+### API
 
-Other scripts: `npm run build`, `npm run preview`, `npm run lint`, `npm run type-check`.
+Use the Launch Library 2 API by The Space Devs for rocket data.
+Docs: https://thespacedevs.com/llapi
 
-Requires Node 20+.
+Rocket list (returns all 13 SpaceX rockets in a single request):
 
-## Features
+    GET https://lldev.thespacedevs.com/2.2.0/config/launcher/?manufacturer__name=SpaceX&mode=detailed&limit=20
 
-- **List** — all 13 SpaceX launcher configurations with image, name and description
-- **Filter** — client-side search by rocket name
-- **Add rocket** — in-memory only, since the API is read-only
-- **Detail** — image, name, description, cost per launch, country, first flight
-- **UI states** — loading, error with retry, empty, success
-- **Missing data** — null and empty-string fields fall back to a placeholder
-- Responsive across mobile, tablet and desktop
+Single rocket:
 
-## Architecture
+    GET https://lldev.thespacedevs.com/2.2.0/config/launcher/:id/
 
-```
-src/
-├─ types/       API response shapes + the app's Rocket model
-├─ services/    fetch wrapper (http.ts) + rocket endpoints and mapper
-├─ stores/      Pinia store: single source of truth
-├─ utils/       currency, date and fallback formatting
-├─ components/  RocketCard, RocketFormDialog, State{Loading,Error,Empty}
-└─ pages/       index.vue (/) and rockets/[id].vue (/rockets/:id)
-```
+`mode=detailed` is required — without it the response omits `description`
+and the other detail fields. `limit=20` is required too — the default page size
+is 10, so without it you get 10 rockets and a `next` page instead of all 13.
 
-### Notes on the decisions
+**API version:** use `2.2.0` as shown above. The docs site now showcases
+`2.3.0`, but `2.2.0` is still live with no announced end-of-life, and the field
+names in the table below are the `2.2.0` ones. Don't migrate: `2.3.0` renames
+the endpoint to `/2.3.0/launcher_configurations/` and moves several of these
+fields (`image_url` becomes `image.image_url`, `manufacturer.country_code`
+becomes a `manufacturer.country` array). Both versions return the same 13
+rockets.
 
-**Two rocket types.** `LauncherConfig` mirrors the API's `snake_case` shape;
-`Rocket` is the camelCase model the UI consumes. The mapper in
-`services/rockets.ts` is the only place that knows about the API's field
-layout, so the v2.3.0 changes the brief warns about would be a one-file edit.
+| Requirement      | Field                              |
+| ---------------- | ---------------------------------- |
+| rocket image     | `image_url`                        |
+| rocket name      | `full_name`                        |
+| description      | `description`                      |
+| cost per launch  | `launch_cost`                      |
+| country          | `manufacturer.country_code`        |
+| first flight     | `maiden_flight`                    |
 
-**Store-first detail page.** Opening a rocket from the list costs no request,
-which matters given the documented 15 requests/hour limit. A direct visit to
-`/rockets/:id` falls through to the API.
+**Rate limit:** the API allows 15 requests/hour for anonymous users. Use the
+`lldev.thespacedevs.com` host shown above during development — it serves the
+same data with a far more generous limit. The production host,
+`ll.thespacedevs.com`, will throttle you quickly.
 
-**API rockets and user rockets are stored separately.** A refetch can
-therefore never wipe out what the user added.
+Note that some rockets have missing values for `launch_cost`, `maiden_flight`,
+and `image_url`.
 
-**Retry is conditional.** A 404 hides the retry button, since retrying it can
-only fail again.
+### Non-Functional Requirements
+- Use the Launch Library 2 API (see the API section above) for getting the rocket data
+- Implement routers
+- Implement state management
+- Implement lifecycles
+- Create components based will be + points
+- UI states (Loading, Fail/Retry, and Success)
+- Show loading when waiting response from API
+- If an error occurred, user can retry by pressing retry button
+- Show result when get response from API
 
-## Fixing the starter
+### Nice to have characteristics
+Responsive design
+You don’t need to worry about the detailed design, we’re not interested in your artistic prowess (for now), put your efforts on creating a readable/clean/maintainable source code.
 
-On a clean `npm install`, the starter failed `npm run type-check` with four
-errors. There was no committed lockfile, so npm resolved newer minor versions
-than the scaffold was written against:
+### Submission
 
-- `@tsconfig/node22` had moved to `"lib": ["es2024"]`, which TypeScript 5.6
-  does not recognise. Pinned to `22.0.0`.
-- `vue-router` 4.6 ships its own type-only `vue-router/auto` entry, so
-  `import { createRouter } from 'vue-router/auto'` no longer resolves. The
-  runtime APIs now come from `vue-router`; `routes` still comes from
-  `vue-router/auto-routes`. Typed routes are unaffected.
+1.  **Fork** this repository.
 
-`package-lock.json` is committed so this stays reproducible.
+2.  Implement your solution on a dedicated feature branch (e.g., `feat/allo-spacex`).
+
+3.  When complete, submit your solution via a **Pull Request (PR)** back to the main repository.
+   
+4.  Please complete the form to submit your technical test: [Click Here](https://forms.gle/nZKQ2EjTCPfAKHog7)
+
+Good luck with your assignment! Don't hesitate to contact us if you have any questions about the assignment process.

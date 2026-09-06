@@ -1,14 +1,24 @@
 <template>
   <v-container class="py-8">
-    <header class="mb-6">
-      <h1 class="text-h5 font-weight-bold">
-        SpaceX Rockets
-      </h1>
-      <p class="text-body-2 text-medium-emphasis">
-        Launcher configurations from the Launch Library 2 API.
-      </p>
+    <header class="d-flex flex-wrap ga-4 align-center mb-6">
+      <div class="flex-grow-1">
+        <h1 class="text-h5 font-weight-bold">SpaceX Rockets</h1>
+        <p class="text-body-2 text-medium-emphasis">
+          Launcher configurations from the Launch Library 2 API.
+        </p>
+      </div>
+
+      <v-btn
+        color="primary"
+        prepend-icon="mdi-plus"
+        variant="flat"
+        @click="isDialogOpen = true"
+      >
+        Add rocket
+      </v-btn>
     </header>
 
+    <RocketFormDialog v-model="isDialogOpen" @created="handleCreated" />
     <v-text-field
       class="mb-6"
       clearable
@@ -49,12 +59,23 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, onMounted } from 'vue'
+
+  import { computed, onMounted, ref } from 'vue'  
 
   import { useRocketsStore } from '@/stores/rockets'
 
+  import type { NewRocketInput } from '@/types/rocket'  
+
   const store = useRocketsStore()
+
+  const isDialogOpen = ref(false) 
+
   const isLoading = computed(() => store.status === 'idle' || store.status === 'loading')
+
+  function handleCreated (input: NewRocketInput): void {
+    store.addRocket(input)
+    store.setFilter('')
+  }
 
   onMounted(() => {
     store.loadRockets()

@@ -1,14 +1,23 @@
 <template>
-  <v-dialog v-model="isOpen" max-width="520">
+  <v-dialog
+    v-model="isOpen"
+    max-width="520"
+  >
     <v-card>
-      <v-card-title class="text-h6 pt-4"> Add a rocket </v-card-title>
+      <v-card-title class="text-h6 pt-4">
+        Add a rocket
+      </v-card-title>
 
       <v-card-subtitle class="text-wrap pb-2">
         This rocket is stored in the app only — the API is read-only.
       </v-card-subtitle>
 
       <v-card-text>
-        <v-form ref="formRef" validate-on="submit" @submit.prevent="submit">
+        <v-form
+          ref="formRef"
+          validate-on="submit"
+          @submit.prevent="submit"
+        >
           <v-text-field
             v-model="name"
             class="mb-2"
@@ -63,8 +72,17 @@
 
       <v-card-actions class="px-6 pb-4">
         <v-spacer />
-        <v-btn variant="text" @click="isOpen = false"> Cancel </v-btn>
-        <v-btn color="primary" variant="flat" @click="submit">
+        <v-btn
+          variant="text"
+          @click="isOpen = false"
+        >
+          Cancel
+        </v-btn>
+        <v-btn
+          color="primary"
+          variant="flat"
+          @click="submit"
+        >
           Add rocket
         </v-btn>
       </v-card-actions>

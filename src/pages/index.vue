@@ -2,7 +2,9 @@
   <v-container class="py-8">
     <header class="d-flex flex-wrap ga-4 align-center mb-6">
       <div class="flex-grow-1">
-        <h1 class="text-h5 font-weight-bold">SpaceX Rockets</h1>
+        <h1 class="text-h5 font-weight-bold">
+          SpaceX Rockets
+        </h1>
         <p class="text-body-2 text-medium-emphasis">
           Launcher configurations from the Launch Library 2 API.
         </p>
@@ -18,7 +20,10 @@
       </v-btn>
     </header>
 
-    <RocketFormDialog v-model="isDialogOpen" @created="handleCreated" />
+    <RocketFormDialog
+      v-model="isDialogOpen"
+      @created="handleCreated"
+    />
     <v-text-field
       class="mb-6"
       clearable

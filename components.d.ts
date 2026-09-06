@@ -10,5 +10,8 @@ declare module 'vue' {
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    StateEmpty: typeof import('./src/components/StateEmpty.vue')['default']
+    StateError: typeof import('./src/components/StateError.vue')['default']
+    StateLoading: typeof import('./src/components/StateLoading.vue')['default']
   }
 }

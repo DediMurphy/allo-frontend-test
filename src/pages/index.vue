@@ -1,6 +1,9 @@
 <template>
-  <h1>hallo</h1>
-  <HelloWorld />
+  <v-container>
+    <StateLoading />
+    <StateError @retry="console.log('retry diklik')" />
+    <StateEmpty />
+  </v-container>
 </template>
 
 <script lang="ts" setup>

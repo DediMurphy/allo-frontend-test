@@ -12,16 +12,16 @@ export interface LauncherManufacturer {
 }
 
 export interface LauncherConfig {
-    id: number;
-    name: string;
-    full_name: string;
-    description: string;
-    variant: string;
-    family: string;
-    manufacturer: LauncherManufacturer;
-    image_url: string;
-    launch_cost: number;
-    maiden_flight: string;
+  id: number
+  name: string
+  full_name: string
+  description: string
+  variant: string
+  family: string
+  manufacturer: LauncherManufacturer
+  image_url: string | null
+  launch_cost: string | null
+  maiden_flight: string | null
 }
 
 export interface Rocket {

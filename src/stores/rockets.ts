@@ -8,7 +8,7 @@ import type { NewRocketInput, Rocket } from '@/types/rocket'
 
 export type RequestStatus = 'idle' | 'loading' | 'success' | 'error'
 
-export const useRocketStore = defineStore('rockets', () => {
+export const useRocketsStore = defineStore('rockets', () => {
 
     const apiRockets = ref<Rocket[]>([])
     const customRockets = ref<Rocket[]>([])
